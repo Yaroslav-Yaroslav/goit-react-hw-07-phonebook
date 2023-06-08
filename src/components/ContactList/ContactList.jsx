@@ -27,9 +27,9 @@ export const ContactList = () => {
         <b>No contacts</b>
       ) : null}
       <List>
-        {filteredContacts.map(({ name, number, id }) => (
+        {filteredContacts.map(({ name, phone, id }) => (
           <Item key={id}>
-            {name}: {number}
+            {name}: {phone}
             <Button
               type="button"
               aria-label="Delete"
