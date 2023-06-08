@@ -1,15 +1,21 @@
 import { RiDeleteBin5Line } from 'react-icons/ri';
 import { List, Item, Button } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, getFilter } from 'redux/selectors';
-import { deleteContact } from 'redux/contactsSlice';
+import {
+  getContacts,
+  getFilter,
+  getError,
+  getIsLoading,
+} from 'redux/selectors';
+
+import { deleteContact } from 'redux/operations';
 
 export const ContactList = () => {
   const contacts = useSelector(getContacts);
-  console.log('contacts:', contacts);
-
+  const isLoading = useSelector(getIsLoading);
+  const error = useSelector(getError);
   const filter = useSelector(getFilter);
-  console.log('filter:', filter);
+
   const dispatch = useDispatch();
   const filteredContacts = contacts.filter(({ name }) =>
     name.toLowerCase().includes(filter.toLowerCase())
@@ -17,7 +23,9 @@ export const ContactList = () => {
 
   return (
     <>
-      {filteredContacts.length === 0 ? <h3>No contacts</h3> : null}
+      {filteredContacts.length === 0 && !error && !isLoading ? (
+        <b>No contacts</b>
+      ) : null}
       <List>
         {filteredContacts.map(({ name, number, id }) => (
           <Item key={id}>

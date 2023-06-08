@@ -2,7 +2,7 @@ import { Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import { Form, ErrorMessage, FormField, Button } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
 import { getContacts } from 'redux/selectors';
 import { toast } from 'react-hot-toast';
 
@@ -12,7 +12,7 @@ const ContactSchema = Yup.object().shape({
   name: Yup.string()
     .max(30, 'The max number of characters is 30!')
     .required('Enter a name'),
-  number: Yup.string()
+  phone: Yup.string()
     .matches(phoneRegExp, 'Phone number is not valid')
     .required('Enter a phone number'),
 });
@@ -24,13 +24,13 @@ export const ContactForm = () => {
       return toast.error(`${valuesFormik.name} is already in contacts`);
     }
     dispatch(addContact(valuesFormik));
-    actionsFormik.resetForm({ valuesFormik: { name: '', number: '' } });
+    actionsFormik.resetForm({ valuesFormik: { name: '', phone: '' } });
   };
   return (
     <Formik
       initialValues={{
         name: '',
-        number: '',
+        phone: '',
       }}
       validationSchema={ContactSchema}
       onSubmit={(values, actions) => {
@@ -45,8 +45,8 @@ export const ContactForm = () => {
         </FormField>
         <FormField>
           Number
-          <Field name="number" />
-          <ErrorMessage name="number" component="p" />
+          <Field name="phone" />
+          <ErrorMessage name="phone" component="p" />
         </FormField>
         <Button type="submit">Add contact</Button>
       </Form>
